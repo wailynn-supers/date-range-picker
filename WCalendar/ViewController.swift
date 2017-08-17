@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet var calendarView: JTAppleCalendarView!
     @IBOutlet var monthLabel: UILabel!
 
-
+    var firstDate: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,8 @@ class ViewController: UIViewController {
     func setUpCalendarView(){
         calendarView.minimumLineSpacing = 0
         calendarView.minimumInteritemSpacing = 0
-
+        calendarView.allowsMultipleSelection = true
+        calendarView.isRangeSelectionUsed = true
         calendarView.visibleDates { (visibleDates) in
             self.setupViewsOfCalendar(from: visibleDates)
         }
@@ -36,10 +37,21 @@ class ViewController: UIViewController {
 
     func handleCellSelected(view: JTAppleCell?, cellState: CellState) {
         guard let validCell = view as? DateCell else { return }
-        if validCell.isSelected {
+//        if validCell.isSelected {
+//            validCell.selectedView.isHidden = false
+//        } else {
+//            validCell.selectedView.isHidden = true
+//        }
+        switch cellState.selectedPosition() {
+        case .full, .left, .right:
             validCell.selectedView.isHidden = false
-        } else {
+            validCell.selectedView.backgroundColor = UIColor.yellow // Or you can put what ever you like for your rounded corners, and your stand-alone selected cell
+        case .middle:
+            validCell.selectedView.isHidden = false
+            validCell.selectedView.backgroundColor = UIColor.blue // Or what ever you want for your dates that land in the middle
+        default:
             validCell.selectedView.isHidden = true
+            validCell.selectedView.backgroundColor = nil // Have no selection when a cell is not selected
         }
     }
     func handleCellTextColor(view: JTAppleCell?, cellState: CellState) {
@@ -75,8 +87,6 @@ extension ViewController: JTAppleCalendarViewDataSource {
         let parameters = ConfigurationParameters(startDate: startDate!, endDate: endDate!)
         return parameters
     }
-
-
 }
 
 extension ViewController: JTAppleCalendarViewDelegate {
@@ -91,6 +101,11 @@ extension ViewController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(view: cell, cellState: cellState)
         handleCellSelected(view: cell, cellState: cellState)
+        if firstDate != nil {
+            calendarView.selectDates(from: firstDate!, to: date,  triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+        } else {
+            firstDate = date
+        }
     }
 
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
