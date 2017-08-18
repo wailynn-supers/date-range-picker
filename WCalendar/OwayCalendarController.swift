@@ -8,7 +8,7 @@
 
 import UIKit
 import JTAppleCalendar
-class ViewController: UIViewController {
+class OwayCalendarController: UIViewController {
     let formatter = DateFormatter()
     @IBOutlet var calendarView: JTAppleCalendarView!
     @IBOutlet var monthLabel: UILabel!
@@ -121,7 +121,7 @@ class ViewController: UIViewController {
     }
     
 }
-extension ViewController: JTAppleCalendarViewDataSource {
+extension OwayCalendarController: JTAppleCalendarViewDataSource {
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
         formatter.dateFormat = "yyyy MM dd"
         formatter.timeZone = Calendar.current.timeZone
@@ -135,7 +135,7 @@ extension ViewController: JTAppleCalendarViewDataSource {
     }
 }
 
-extension ViewController: JTAppleCalendarViewDelegate {
+extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "dateCell", for: indexPath) as! DateCell
         cell.dateLabel.text = cellState.text
