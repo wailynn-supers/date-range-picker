@@ -11,4 +11,7 @@ import JTAppleCalendar
 class DateCell: JTAppleCell {
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var selectedView: UIView!
+    @IBOutlet var middleView: UIView!
+    @IBOutlet var leftView: UIView!
+    @IBOutlet var rightView: UIView!
 }

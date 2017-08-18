@@ -37,21 +37,33 @@ class ViewController: UIViewController {
 
     func handleCellSelected(_ view: JTAppleCell?, cellState: CellState) {
         guard let validCell = view as? DateCell else { return }
-//        if validCell.isSelected {
-//            validCell.selectedView.isHidden = false
-//        } else {
-//            validCell.selectedView.isHidden = true
-//        }
+
         switch cellState.selectedPosition() {
-        case .full, .left, .right:
+        case .full:
             validCell.selectedView.isHidden = false
-            validCell.selectedView.backgroundColor = UIColor.yellow // Or you can put what ever you like for your rounded corners, and your stand-alone selected cell
+            validCell.middleView.isHidden = true
+            validCell.leftView.isHidden = true
+            validCell.rightView.isHidden = true
+        case .left:
+            validCell.selectedView.isHidden = false
+            validCell.middleView.isHidden = true
+            validCell.leftView.isHidden = false
+            validCell.rightView.isHidden = true
+        case .right:
+            validCell.selectedView.isHidden = false
+            validCell.middleView.isHidden = true
+            validCell.leftView.isHidden = true
+            validCell.rightView.isHidden = false
         case .middle:
-            validCell.selectedView.isHidden = false
-            validCell.selectedView.backgroundColor = UIColor.blue // Or what ever you want for your dates that land in the middle
+            validCell.selectedView.isHidden = true
+            validCell.middleView.isHidden = false
+            validCell.leftView.isHidden = true
+            validCell.rightView.isHidden = true
         default:
             validCell.selectedView.isHidden = true
-            validCell.selectedView.backgroundColor = nil // Have no selection when a cell is not selected
+            validCell.middleView.isHidden = true
+            validCell.leftView.isHidden = true
+            validCell.rightView.isHidden = true
         }
     }
     func handleCellTextColor(_ view: JTAppleCell?, cellState: CellState) {
