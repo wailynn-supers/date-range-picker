@@ -9,6 +9,29 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>WCalendarTests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>612ED8BB1F45F1AB00155BF8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>612ED8D21F45F1AC00155BF8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>612ED8DD1F45F1AC00155BF8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 	</dict>
 </dict>
 </plist>

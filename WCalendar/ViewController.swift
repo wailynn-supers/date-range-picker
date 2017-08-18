@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func handleCellSelected(view: JTAppleCell?, cellState: CellState) {
+    func handleCellSelected(_ view: JTAppleCell?, cellState: CellState) {
         guard let validCell = view as? DateCell else { return }
 //        if validCell.isSelected {
 //            validCell.selectedView.isHidden = false
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
             validCell.selectedView.backgroundColor = nil // Have no selection when a cell is not selected
         }
     }
-    func handleCellTextColor(view: JTAppleCell?, cellState: CellState) {
+    func handleCellTextColor(_ view: JTAppleCell?, cellState: CellState) {
         guard let validCell = view as? DateCell else { return }
         if cellState.isSelected {
             validCell.dateLabel.textColor = UIColor.white
@@ -93,14 +93,14 @@ extension ViewController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "dateCell", for: indexPath) as! DateCell
         cell.dateLabel.text = cellState.text
-        handleCellTextColor(view: cell, cellState: cellState)
-        handleCellSelected(view: cell, cellState: cellState)
+        handleCellTextColor(cell, cellState: cellState)
+        handleCellSelected(cell, cellState: cellState)
         return cell
     }
 
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
-        handleCellTextColor(view: cell, cellState: cellState)
-        handleCellSelected(view: cell, cellState: cellState)
+        handleCellTextColor(cell, cellState: cellState)
+        handleCellSelected(cell, cellState: cellState)
         if firstDate != nil {
             calendarView.selectDates(from: firstDate!, to: date,  triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
         } else {
@@ -109,8 +109,8 @@ extension ViewController: JTAppleCalendarViewDelegate {
     }
 
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
-        handleCellTextColor(view: cell, cellState: cellState)
-        handleCellSelected(view: cell, cellState: cellState)
+        handleCellTextColor(cell, cellState: cellState)
+        handleCellSelected(cell, cellState: cellState)
     }
 
     func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
