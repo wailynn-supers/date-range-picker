@@ -21,22 +21,38 @@ class OwayCalendarController: UIViewController {
     @IBOutlet var returnWDay: UILabel!
     @IBOutlet var returnHighlightView: UIView!
     
+    @IBOutlet var departView: UIView!
+    @IBOutlet var returnView: UIView!
+    @IBOutlet var placeholderView: UIView!
+    
     var firstDate: Date?
     var lastDate: Date?
+    
+    var isOneWay:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCalendarView()
         firstDate = Date()
         lastDate = Date().after2days
-        showHeaderDate(firstDate!, lastDate!)
-        calendarView.selectDates(from: firstDate!, to: lastDate!, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+        if isOneWay == true {
+            showHeaderDate(firstDate!, firstDate!)
+            calendarView.selectDates([firstDate!])
+        } else {
+            showHeaderDate(firstDate!, lastDate!)
+            calendarView.selectDates(from: firstDate!, to: lastDate!, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+        }
+    }
+    
+    func focusDepart(_ flag: Bool){
+        departHighLightView.isHidden = !flag
+        returnHighlightView.isHidden = flag
     }
     
     func setUpCalendarView(){
         calendarView.minimumLineSpacing = 0
         calendarView.minimumInteritemSpacing = 0
-        calendarView.allowsMultipleSelection = true
+        calendarView.allowsMultipleSelection = !isOneWay
         calendarView.isRangeSelectionUsed = true
         calendarView.visibleDates { (visibleDates) in
             self.setupViewsOfCalendar(from: visibleDates)
@@ -91,11 +107,14 @@ class OwayCalendarController: UIViewController {
         let date =  visibleDates.monthDates.first!.date
         self.formatter.dateFormat = "MMMM yyyy"
         self.monthLabel.text = self.formatter.string(from: date)
-        self.departHighLightView.isHidden = false
-        self.returnHighlightView.isHidden = true
+        focusDepart(true)
     }
     
     func showHeaderDate(_ depart: Date, _ returnDate: Date){
+        
+        returnView.isHidden = isOneWay
+        placeholderView.isHidden = !isOneWay
+        
         self.formatter.dateFormat = "dd"
         self.departDay.text = self.formatter.string(from: depart)
         self.returnDay.text = self.formatter.string(from: returnDate)
@@ -141,21 +160,28 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
-        if firstDate == nil {
-            firstDate = date
+        focusDepart(true)
+        if isOneWay == true {
+            showHeaderDate(date, date)
         } else {
-            
-            if lastDate == nil {
-                lastDate = date
+            if firstDate == nil {
+                firstDate = date
             } else {
-                if date < lastDate! {
-                    firstDate = date
-                } else {
+                
+                if lastDate == nil {
                     lastDate = date
+                } else {
+                    if date < lastDate! {
+                        firstDate = date
+                        focusDepart(true)
+                    } else {
+                        lastDate = date
+                        focusDepart(false)
+                    }
                 }
+                calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+                showHeaderDate(firstDate!, lastDate ?? date)
             }
-            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
-            showHeaderDate(firstDate!, lastDate ?? date)
         }
     }
     
@@ -167,16 +193,19 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
-        print(calendar.selectedDates)
-        calendar.deselectDates(from: date.after1day, to: lastDate, triggerSelectionDelegate: false)
-        if let last = lastDate {
-            if date < last {
-                lastDate = date
+        focusDepart(false)
+        if isOneWay == false {
+            calendar.deselectDates(from: date.after1day, to: lastDate, triggerSelectionDelegate: false)
+            if let last = lastDate {
+                if date < last {
+                    lastDate = date
+                }
+                showHeaderDate(firstDate!, lastDate!)
+                calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
             }
-            showHeaderDate(firstDate!, lastDate!)
-            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+        } else {
+            showHeaderDate(date, date)
         }
-        
     }
     
     func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
