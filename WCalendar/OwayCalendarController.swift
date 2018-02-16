@@ -22,10 +22,15 @@ class OwayCalendarController: UIViewController {
     @IBOutlet var returnHighlightView: UIView!
     
     var firstDate: Date?
+    var lastDate: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCalendarView()
+        firstDate = Date()
+        lastDate = Date().after2days
+        showHeaderDate(firstDate!, lastDate!)
+        calendarView.selectDates(from: firstDate!, to: lastDate!, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
     }
     
     func setUpCalendarView(){
@@ -36,12 +41,6 @@ class OwayCalendarController: UIViewController {
         calendarView.visibleDates { (visibleDates) in
             self.setupViewsOfCalendar(from: visibleDates)
         }
-        
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func handleCellSelected(_ view: JTAppleCell?, cellState: CellState) {
@@ -90,13 +89,10 @@ class OwayCalendarController: UIViewController {
     
     func setupViewsOfCalendar(from visibleDates: DateSegmentInfo) {
         let date =  visibleDates.monthDates.first!.date
-        
         self.formatter.dateFormat = "MMMM yyyy"
         self.monthLabel.text = self.formatter.string(from: date)
-        self.showHeaderDate(date, date)
         self.departHighLightView.isHidden = false
         self.returnHighlightView.isHidden = true
-
     }
     
     func showHeaderDate(_ depart: Date, _ returnDate: Date){
@@ -117,9 +113,7 @@ class OwayCalendarController: UIViewController {
         let selectedDates = calendarView.selectedDates
         formatter.dateFormat = "yyyy-MM-dd"
         print("FROM \(formatter.string(from: selectedDates.first!)) -> TO \(formatter.string(from: selectedDates.last!))")
-        
     }
-    
 }
 extension OwayCalendarController: JTAppleCalendarViewDataSource {
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
@@ -147,30 +141,25 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, didSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
-        if firstDate != nil {
-            calendarView.selectDates(from: firstDate!, to: date,  triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
-            showHeaderDate(firstDate!, date)
-        } else {
+        if firstDate == nil {
             firstDate = date
+        } else {
+            
+            if lastDate == nil {
+                lastDate = date
+            } else {
+                if date < lastDate! {
+                    firstDate = date
+                } else {
+                    lastDate = date
+                }
+            }
+            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+            showHeaderDate(firstDate!, lastDate ?? date)
         }
     }
     
     func calendar(_ calendar: JTAppleCalendarView, shouldSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) -> Bool {
-        let selectedDates = calendar.selectedDates
-        if selectedDates.contains(date) {
-        if (selectedDates.count > 2 && selectedDates.first != date && selectedDates.last != date) {
-                let indexOfDate = selectedDates.index(of: date)
-                let dateBeforeDeselectedDate = selectedDates[indexOfDate!-1]
-                calendar.deselectAllDates()
-                calendar.selectDates(
-                    from: selectedDates.first!,
-                    to: dateBeforeDeselectedDate,
-                    triggerSelectionDelegate: true,
-                    keepSelectionIfMultiSelectionAllowed: true)
-                calendar.reloadData()
-            }
-            
-        }
         return true
     }
     
@@ -178,9 +167,53 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
+        print(calendar.selectedDates)
+        calendar.deselectDates(from: date.after1day, to: lastDate, triggerSelectionDelegate: false)
+        if let last = lastDate {
+            if date < last {
+                lastDate = date
+            }
+            showHeaderDate(firstDate!, lastDate!)
+            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+        }
+        
     }
     
     func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
         setupViewsOfCalendar(from: visibleDates)
+    }
+}
+extension Date {
+    
+    var after1day: Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: self)!
+    }
+    
+    var after2days: Date {
+        return Calendar.current.date(byAdding: .day, value: 2, to: self)!
+    }
+    
+    var last1day: Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: self)!
+    }
+    
+    var nextMonth: Date {
+        return Calendar.current.date(byAdding: .month, value: 1, to: self)!
+    }
+    
+    func startOfMonth() -> Date {
+        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self)))!
+    }
+    
+    func endOfMonth() -> Date {
+        return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth())!
+    }
+    
+    func next6Month() -> Date {
+        return Calendar.current.date(byAdding: .month, value: 6, to: self)!
+    }
+    
+    func lastXYears(_ year: Int) -> Date {
+        return Calendar.current.date(byAdding: .year, value: -year, to: self)!
     }
 }
