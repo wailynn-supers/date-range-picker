@@ -35,6 +35,7 @@ class OwayCalendarController: UIViewController {
         setUpCalendarView()
         firstDate = Date()
         lastDate = Date().after2days
+        
         if isOneWay == true {
             showHeaderDate(firstDate!, firstDate!)
             calendarView.selectDates([firstDate!])
@@ -210,6 +211,10 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     
     func calendar(_ calendar: JTAppleCalendarView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
         setupViewsOfCalendar(from: visibleDates)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }
 extension Date {

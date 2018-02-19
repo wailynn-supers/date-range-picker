@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -200,9 +199,11 @@
                                     <constraint firstAttribute="height" constant="30" id="WzR-Bv-XmT"/>
                                 </constraints>
                             </stackView>
-                            <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="diH-bN-KUa" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
+                            <collectionView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="diH-bN-KUa" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
                                 <rect key="frame" x="0.0" y="218" width="375" height="449"/>
                                 <color key="backgroundColor" red="0.792156862745098" green="0.8784313725490196" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="L23-lj-ez9">
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -210,7 +211,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dateCell" id="IKU-TB-tHc" customClass="DateCell" customModule="WCalendar" customModuleProvider="target">
+                                    <collectionViewCell multipleTouchEnabled="YES" contentMode="left" reuseIdentifier="dateCell" id="IKU-TB-tHc" customClass="DateCell" customModule="WCalendar" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -218,21 +219,21 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i3D-m1-HPy">
-                                                    <rect key="frame" x="0.0" y="32.5" width="100" height="35"/>
+                                                    <rect key="frame" x="-2" y="32.5" width="104" height="35"/>
                                                     <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="kD4-C1-9oc"/>
                                                     </constraints>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBs-bM-wxf">
-                                                    <rect key="frame" x="33" y="32.5" width="83" height="35"/>
+                                                    <rect key="frame" x="33" y="32.5" width="67" height="35"/>
                                                     <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="OiZ-Se-6ND"/>
                                                     </constraints>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4jb-0E-vVK">
-                                                    <rect key="frame" x="-8" y="33" width="75" height="35"/>
+                                                    <rect key="frame" x="0.0" y="33" width="67" height="35"/>
                                                     <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="AjL-nW-58H"/>
@@ -260,21 +261,25 @@
                                                 </label>
                                             </subviews>
                                         </view>
+                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <constraints>
-                                            <constraint firstAttribute="leadingMargin" secondItem="4jb-0E-vVK" secondAttribute="leading" constant="16" id="02R-ln-uQb"/>
+                                            <constraint firstItem="4jb-0E-vVK" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="2CN-f8-ufH"/>
                                             <constraint firstItem="4jb-0E-vVK" firstAttribute="trailing" secondItem="e8P-zb-OUH" secondAttribute="trailing" constant="-8" id="3OE-3t-hAK"/>
                                             <constraint firstItem="DBs-bM-wxf" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="DVk-Mn-9Jy"/>
+                                            <constraint firstItem="4jb-0E-vVK" firstAttribute="leading" secondItem="IKU-TB-tHc" secondAttribute="leading" id="F1V-99-16k"/>
+                                            <constraint firstItem="i3D-m1-HPy" firstAttribute="leading" secondItem="IKU-TB-tHc" secondAttribute="leading" constant="-2" id="RPb-JJ-hv7"/>
                                             <constraint firstItem="i3D-m1-HPy" firstAttribute="centerX" secondItem="IKU-TB-tHc" secondAttribute="centerX" id="XD4-u9-aOd"/>
                                             <constraint firstItem="i3D-m1-HPy" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="aj9-Vs-cgA"/>
-                                            <constraint firstAttribute="trailing" secondItem="DBs-bM-wxf" secondAttribute="trailing" constant="-16" id="grK-Un-Vpt"/>
+                                            <constraint firstAttribute="trailing" secondItem="DBs-bM-wxf" secondAttribute="trailing" id="grK-Un-Vpt"/>
+                                            <constraint firstAttribute="trailing" secondItem="i3D-m1-HPy" secondAttribute="trailing" constant="-2" id="k1t-wI-4t8"/>
                                             <constraint firstItem="39S-rM-2Xr" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="nZz-sW-tcN"/>
-                                            <constraint firstItem="i3D-m1-HPy" firstAttribute="width" secondItem="IKU-TB-tHc" secondAttribute="width" id="oNA-E5-JbS"/>
                                             <constraint firstItem="39S-rM-2Xr" firstAttribute="centerX" secondItem="IKU-TB-tHc" secondAttribute="centerX" id="rss-F9-wwp"/>
                                             <constraint firstItem="e8P-zb-OUH" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="uM7-gh-9dZ"/>
                                             <constraint firstItem="e8P-zb-OUH" firstAttribute="centerX" secondItem="IKU-TB-tHc" secondAttribute="centerX" id="uau-Om-NV6"/>
                                             <constraint firstItem="DBs-bM-wxf" firstAttribute="leading" secondItem="e8P-zb-OUH" secondAttribute="leading" constant="8" id="uwy-Lq-2hr"/>
-                                            <constraint firstItem="4jb-0E-vVK" firstAttribute="centerY" secondItem="IKU-TB-tHc" secondAttribute="centerY" id="wo8-Kb-qJX"/>
                                         </constraints>
+                                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                                        <size key="customSize" width="100" height="100"/>
                                         <connections>
                                             <outlet property="dateLabel" destination="39S-rM-2Xr" id="QOQ-vu-jtk"/>
                                             <outlet property="leftView" destination="DBs-bM-wxf" id="xFS-5B-J8m"/>
