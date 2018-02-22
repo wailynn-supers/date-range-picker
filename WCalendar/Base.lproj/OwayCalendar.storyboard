@@ -201,7 +201,7 @@
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" directionalLockEnabled="YES" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" bouncesZoom="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diH-bN-KUa" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
                                 <rect key="frame" x="0.0" y="218" width="375" height="449"/>
-                                <color key="backgroundColor" red="0.792156862745098" green="0.8784313725490196" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.79607843137254897" green="0.87450980392156863" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="L23-lj-ez9">
@@ -220,28 +220,28 @@
                                             <subviews>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i3D-m1-HPy">
                                                     <rect key="frame" x="-2" y="32.5" width="104" height="35"/>
-                                                    <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.89803921568627454" green="0.93725490196078431" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="kD4-C1-9oc"/>
                                                     </constraints>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBs-bM-wxf">
                                                     <rect key="frame" x="33" y="32.5" width="67" height="35"/>
-                                                    <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.79607843137254897" green="0.87450980392156863" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="OiZ-Se-6ND"/>
                                                     </constraints>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4jb-0E-vVK">
                                                     <rect key="frame" x="0.0" y="33" width="67" height="35"/>
-                                                    <color key="backgroundColor" red="0.59607843140000005" green="0.73333333329999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.89803921568627454" green="0.93725490196078431" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="AjL-nW-58H"/>
                                                     </constraints>
                                                 </view>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8P-zb-OUH">
                                                     <rect key="frame" x="25" y="25" width="50" height="50"/>
-                                                    <color key="backgroundColor" red="0.16078431369999999" green="0.41176470590000003" blue="0.72941176470000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.13725490196078433" green="0.47450980392156861" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="MZO-8z-UvF"/>
                                                         <constraint firstAttribute="height" constant="50" id="RR3-G3-sw8"/>
@@ -299,11 +299,11 @@
                         <constraints>
                             <constraint firstItem="IP4-kt-C3y" firstAttribute="top" secondItem="Jx5-d4-xKF" secondAttribute="bottom" constant="16" id="3eS-CM-SZz"/>
                             <constraint firstAttribute="trailing" secondItem="diH-bN-KUa" secondAttribute="trailing" id="7mj-DF-6tt"/>
-                            <constraint firstItem="Jx5-d4-xKF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="8rk-dF-1oM"/>
                             <constraint firstItem="diH-bN-KUa" firstAttribute="top" secondItem="acT-VR-YvF" secondAttribute="bottom" id="Erd-12-SK4"/>
                             <constraint firstAttribute="trailing" secondItem="acT-VR-YvF" secondAttribute="trailing" id="GmI-nO-sTR"/>
+                            <constraint firstItem="Jx5-d4-xKF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="OTr-lr-5OS"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="diH-bN-KUa" secondAttribute="bottom" id="UYE-zn-zgd"/>
                             <constraint firstItem="Jx5-d4-xKF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="e0M-WB-4GZ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="diH-bN-KUa" secondAttribute="bottom" id="en7-M4-vDI"/>
                             <constraint firstItem="diH-bN-KUa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="gHo-wr-6Iu"/>
                             <constraint firstItem="acT-VR-YvF" firstAttribute="top" secondItem="IP4-kt-C3y" secondAttribute="bottom" constant="8" id="q3I-Kd-O3s"/>
                             <constraint firstAttribute="trailing" secondItem="IP4-kt-C3y" secondAttribute="trailing" constant="16" id="qQX-NG-xgp"/>

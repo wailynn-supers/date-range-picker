@@ -29,12 +29,19 @@ class OwayCalendarController: UIViewController {
     var lastDate: Date?
     
     var isOneWay:Bool = false
+
+    var departTouch: Bool = true
+
+    var validDate: Date = Date()
+
+    let dayColor = UIColor(red:0.14, green:0.47, blue:0.89, alpha:1.0)
+    let invalidDayColor = UIColor.gray
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCalendarView()
-        firstDate = Date()
-        lastDate = Date().after2days
+        firstDate = validDate
+        lastDate = validDate.after2days
         
         if isOneWay == true {
             showHeaderDate(firstDate!, firstDate!)
@@ -43,6 +50,10 @@ class OwayCalendarController: UIViewController {
             showHeaderDate(firstDate!, lastDate!)
             calendarView.selectDates(from: firstDate!, to: lastDate!, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
         }
+    }
+
+    func toggleTouch() {
+        departTouch = !departTouch
     }
     
     func focusDepart(_ flag: Bool){
@@ -69,39 +80,52 @@ class OwayCalendarController: UIViewController {
             validCell.middleView.isHidden = true
             validCell.leftView.isHidden = true
             validCell.rightView.isHidden = true
+            validCell.dateLabel.textColor = UIColor.white
         case .left:
             validCell.selectedView.isHidden = false
             validCell.middleView.isHidden = true
             validCell.leftView.isHidden = false
             validCell.rightView.isHidden = true
+            validCell.dateLabel.textColor = UIColor.white
         case .right:
             validCell.selectedView.isHidden = false
             validCell.middleView.isHidden = true
             validCell.leftView.isHidden = true
             validCell.rightView.isHidden = false
+            validCell.dateLabel.textColor = UIColor.white
         case .middle:
             validCell.selectedView.isHidden = true
             validCell.middleView.isHidden = false
             validCell.leftView.isHidden = true
             validCell.rightView.isHidden = true
+            validCell.dateLabel.textColor = dayColor
         default:
             validCell.selectedView.isHidden = true
             validCell.middleView.isHidden = true
             validCell.leftView.isHidden = true
             validCell.rightView.isHidden = true
         }
+        if cellState.dateBelongsTo != .thisMonth {
+            validCell.selectedView.isHidden = true
+            validCell.middleView.isHidden = true
+            validCell.leftView.isHidden = true
+            validCell.rightView.isHidden = true
+        }
+
     }
     func handleCellTextColor(_ view: JTAppleCell?, cellState: CellState) {
         guard let validCell = view as? DateCell else { return }
-        if cellState.isSelected {
-            validCell.dateLabel.textColor = UIColor.white
-        } else {
+
             if cellState.dateBelongsTo == .thisMonth {
-                validCell.dateLabel.textColor = UIColor.darkGray
+                if cellState.date < validDate {
+                    validCell.dateLabel.textColor = invalidDayColor
+                } else {
+                    validCell.dateLabel.textColor = dayColor
+                }
             } else {
-                validCell.dateLabel.textColor = UIColor.lightGray
+                validCell.dateLabel.textColor = invalidDayColor
             }
-        }
+
     }
     
     func setupViewsOfCalendar(from visibleDates: DateSegmentInfo) {
@@ -153,6 +177,12 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTAppleCell {
         let cell = calendar.dequeueReusableJTAppleCell(withReuseIdentifier: "dateCell", for: indexPath) as! DateCell
         cell.dateLabel.text = cellState.text
+
+        if cellState.dateBelongsTo == .thisMonth {
+            cell.dateLabel.isHidden = false
+        } else {
+            cell.dateLabel.isHidden = true
+        }
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
         return cell
@@ -165,38 +195,54 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
         if isOneWay == true {
             showHeaderDate(date, date)
         } else {
-            if date < lastDate! {
+            if departTouch == false && date < firstDate! {
+                toggleTouch()
+            }
+            calendar.deselectAllDates(triggerSelectionDelegate: false)
+            if departTouch {
                 firstDate = date
                 focusDepart(true)
+                calendar.selectDates(from: firstDate!, to: date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+                showHeaderDate(firstDate!, date)
+                toggleTouch()
             } else {
                 lastDate = date
                 focusDepart(false)
+                toggleTouch()
+                calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+                showHeaderDate(firstDate!, lastDate ?? date)
             }
-            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
-            showHeaderDate(firstDate!, lastDate ?? date)
         }
     }
     
     func calendar(_ calendar: JTAppleCalendarView, shouldSelectDate date: Date, cell: JTAppleCell?, cellState: CellState) -> Bool {
+        if cellState.dateBelongsTo != .thisMonth {
+            return false
+        } else {
+            if date < validDate {
+                return false
+            }
+        }
         return true
     }
-    
-    
+
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
         handleCellTextColor(cell, cellState: cellState)
         handleCellSelected(cell, cellState: cellState)
-        focusDepart(false)
-        if isOneWay == false {
-            calendar.deselectDates(from: date.after1day, to: lastDate, triggerSelectionDelegate: false)
-            if let last = lastDate {
-                if date < last {
-                    lastDate = date
-                }
-                showHeaderDate(firstDate!, lastDate!)
-                calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
-            }
-        } else {
+        if isOneWay == true {
             showHeaderDate(date, date)
+        } else {
+            calendar.deselectAllDates(triggerSelectionDelegate: false)
+            let firstDiff = date.interval(ofComponent: .day, fromDate: firstDate!)
+            let lastDiff = lastDate!.interval(ofComponent: .day, fromDate: date)
+
+            if firstDiff < lastDiff {
+                self.firstDate = date
+            } else {
+                self.lastDate = date
+            }
+            showHeaderDate(firstDate!, lastDate!)
+            calendar.selectDates(from: firstDate!, to: lastDate!, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
         }
     }
     
@@ -240,5 +286,15 @@ extension Date {
     
     func lastXYears(_ year: Int) -> Date {
         return Calendar.current.date(byAdding: .year, value: -year, to: self)!
+    }
+
+    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
+
+        let currentCalendar = Calendar.current
+
+        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
+        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
+
+        return end - start
     }
 }
