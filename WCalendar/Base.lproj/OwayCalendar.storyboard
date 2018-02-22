@@ -199,7 +199,7 @@
                                     <constraint firstAttribute="height" constant="30" id="WzR-Bv-XmT"/>
                                 </constraints>
                             </stackView>
-                            <collectionView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="diH-bN-KUa" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" directionalLockEnabled="YES" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" bouncesZoom="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="diH-bN-KUa" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
                                 <rect key="frame" x="0.0" y="218" width="375" height="449"/>
                                 <color key="backgroundColor" red="0.792156862745098" green="0.8784313725490196" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>

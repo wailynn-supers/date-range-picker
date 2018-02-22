@@ -165,24 +165,15 @@ extension OwayCalendarController: JTAppleCalendarViewDelegate {
         if isOneWay == true {
             showHeaderDate(date, date)
         } else {
-            if firstDate == nil {
+            if date < lastDate! {
                 firstDate = date
+                focusDepart(true)
             } else {
-                
-                if lastDate == nil {
-                    lastDate = date
-                } else {
-                    if date < lastDate! {
-                        firstDate = date
-                        focusDepart(true)
-                    } else {
-                        lastDate = date
-                        focusDepart(false)
-                    }
-                }
-                calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
-                showHeaderDate(firstDate!, lastDate ?? date)
+                lastDate = date
+                focusDepart(false)
             }
+            calendar.selectDates(from: firstDate!, to: lastDate ?? date, triggerSelectionDelegate: false, keepSelectionIfMultiSelectionAllowed: true)
+            showHeaderDate(firstDate!, lastDate ?? date)
         }
     }
     
